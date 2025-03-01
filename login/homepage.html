@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Homepage</title>
+    <style>
+        body{
+            background:linear-gradient(to right, #e2e2e2, #c9d6ff);
+        }
+        h1{
+            text-align:center;
+        }
+        button{
+            color:blueviolet;
+            background-color:#c9d6ff;
+            padding:5px;
+            border-radius:5px;
+            font-size:1rem;
+            font-weight:bold;
+            border:none;
+        }
+        button:hover{
+            text-decoration: underline;
+            color:blue;
+        }
+        button, div{
+            font-size:20px;
+            padding:10px;
+        }
+        div{
+            font-weight:400;
+            color:rgb(12,11,11);
+        }
+        span{
+            font-weight:600;
+            font-size:22px;
+            color:black;
+        }
+        .popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            flex-wrap: nowrap;
+            top: 0;
+            left: 0; 
+            display: none; 
+            justify-content: center;
+            align-items: center; 
+            z-index: 1000;
+        }
+        .popup-content{
+            height: 350px; 
+            width: 550px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            justify-content: flex-end;
+            background-color: white;
+            color: white;
+            padding: 1px 1px;
+            align-items: right;
+        }
+    </style>
+    <script type="module" src="./homepage.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            Welcome: <span id="UserFName"></span> <span id="UserLName"></span></div>
+             <a href="#" class="button" id="button"><img src="img/user.png" width="100" height="50"></a>
+        </div>
+    </header>
+    <div class="popup">
+        <div class="popup-content">
+            <a href="#" class="button" id="close"><img src="img/back.png" alt="close" width="25" height="25" ></a>
+            <center><img src="img/user.png" width="100" height="50"></center>
+            <div>Name: <span id="loggedUserFName"></span> <span id="loggedUserLName"></span></div>
+            <div>Semester: <span id="loggedUserSemester"></span></div>
+            <div>Roll Number: <span id="loggedUserRoll_Number"></span></div>
+            <div>Department: <span id="loggedUserDepartment"></span></div>
+            <div>Email: <span id="loggedUserEmail"></span></div>
+            <center><button id="logout">Logout</button></center>
+        </div>
+    </div>
+    <br>
+    <div class="marks-section">
+        <h2>Your Marks</h2>
+        <div id="studentMarks"></div>
+    </div>
+    <br>
+    <div class="attendance-section">
+        <h2>Your Attendance</h2>
+        <div id="studentAttendance"></div>
+    </div>
+</body>
+</html>

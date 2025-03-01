@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Attendance</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: #f4f4f4;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease-out 4s forwards; /* Animation to fade out the loading screen */
+        }
+        #loading-screen img {
+            height: 100px;
+            border-radius: 50%; /* Make the logo round */
+            animation: pulse 2s infinite; /* Animation to pulse the logo */
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            100% { opacity: 0; visibility: hidden; }
+        }
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            height: 50px;
+            border-radius: 50%; /* Make the logo round */
+        }
+        .container {
+            margin-top: 50px;
+            flex: 1;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 86, 179, 0.9);
+        }
+        .section {
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .section:hover {
+            transform: translateY(-10px);
+        }
+        .section h2 {
+            color: #1a1a1a;
+        }
+        .section p {
+            color: #333;
+        }
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .container {
+                margin-top: 20px;
+            }
+            .btn {
+                width: 80%;
+                margin: 10px auto;
+            }
+            .section {
+                margin: 10px;
+                padding: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            header {
+                padding: 10px;
+                font-size: 20px;
+            }
+            .btn {
+                width: 90%;
+                padding: 10px 20px;
+            }
+            .section {
+                margin: 5px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <img src="img/logo.jpg" alt="College Logo">
+    </div>
+    <header>
+        <img src="img/logo.jpg" alt="College Logo">
+        <div>SCMS COLLEGE OF POLYTECHNIC</div>
+    </header>
+    <div class="container">
+        <h2>Welcome to the SCP Attendance Management System</h2>
+        <p>Track attendance easily with our simple and efficient system.</p>
+        <a href="admin/index.html" class="btn">Admin</a>
+        <a href="class/index.html" class="btn">Teachers</a>
+        <a href="login/index.html" class="btn">Students</a>
+    </div>
+    <footer>
+        &copy; 2025 CT PROJECT NO 4. All rights reserved.
+    </footer>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

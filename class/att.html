@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <title>Student Attendance</title>
+    <link rel="stylesheet" href="att.css">
+</head>
+<body>
+    <header>
+        <h1>Student Attendance</h1>
+        <p>Academic Year: 2025</p>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <button id="addClassBtn">Add Class</button>
+            <button id="addStudentBtn">Add Student</button>
+            
+            <label for="classSelect">Class:</label>
+            <select id="classSelect">
+                <option value="">Select a Class</option>
+            </select>
+
+            <label for="semesterSelect">Semester:</label>
+            <select id="semesterSelect">
+                <option value="">Select a Semester</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+            </select>
+        </div>
+
+        <div id="studentList">
+            <h2>Student List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No.</th>
+                        <th>Name</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTableBody">
+                    <!-- Students will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="summary">
+            <h2>Summary</h2>
+            <p>Total Students: <span id="totalStudents">0</span></p>
+            <p>Total Present: <span id="totalPresent">0</span></p>
+            <p>Total Absent: <span id="totalAbsent">0</span></p>
+            <p>Total Leave: <span id="totalLeave">0</span></p>
+            <button id="submitAttendance">Submit Attendance</button>
+        </div>
+        <button id="generateReport">Generate Excel Report</button>
+    </div>
+
+    <!-- Modal for adding a class -->
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeClassModal">&times;</span>
+            <h2>Add Class</h2>
+            <input type="text" id="className" placeholder="Enter Class Name">
+            <button id="saveClass">Submit</button>
+        </div>
+    </div>
+
+    <!-- Modal for adding a student -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeStudentModal">&times;</span>
+            <h2>Add Student</h2>
+            <input type="text" id="studentName" placeholder="Enter Student Name">
+            <input type="number" id="rollNumber" placeholder="Enter Roll Number">
+            <button id="saveStudent">Submit</button>
+        </div>
+    </div>
+
+    <script src="firebase-config.js" type="module"></script>
+    <script src="att.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+input {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+    display: inline-block;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #3362bb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #3362bb;
+}
+
+#displayMarks {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e1e1e1;
+}

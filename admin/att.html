@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Attendance</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        .class-section {
+            margin-bottom: 40px;
+        }
+        .class-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script type="module" src="att.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Attendance Overview</h1>
+        <div id="attendanceContainer"></div>
+    </div>
+</body>
+</html>

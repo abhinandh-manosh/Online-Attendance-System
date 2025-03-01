@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Management</title>
+    <link rel="stylesheet" href="mark.css">
+    <script type="module">
+        // Import Firebase and Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDoc, doc, updateDoc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "**********************************",
+            authDomain: "******************************",
+            projectId: "*******************************",
+            storageBucket: "*******************************",
+            messagingSenderId: "*******************************",
+            appId: "*******************************"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to add a new semester
+        async function addSemester() {
+            const semesterName = document.getElementById("semesterName").value;
+
+            if (semesterName) {
+                try {
+                    const semesterDocRef = doc(db, "semesters", semesterName);
+                    await setDoc(semesterDocRef, {
+                        name: semesterName
+                    });
+                    alert("Semester added successfully!");
+                    loadSemesters();
+                } catch (e) {
+                    console.error("Error adding semester: ", e);
+                }
+            } else {
+                alert("Please fill in the semester name.");
+            }
+        }
+
+        // Function to load semesters into the dropdown
+        async function loadSemesters() {
+            const semesterSelect = document.getElementById("subjectSemesterSelect");
+            const marksSemesterSelect = document.getElementById("marksSemesterSelect");
+            semesterSelect.innerHTML = '<option value="" disabled selected>Select Semester</option>';
+            marksSemesterSelect.innerHTML = '<option value="" disabled selected>Select Semester</option>';
+
+            const querySnapshot = await getDocs(collection(db, "semesters"));
+            querySnapshot.forEach((doc) => {
+                const option = document.createElement("option");
+                option.value = doc.id;
+                option.text = doc.data().name;
+                semesterSelect.appendChild(option);
+
+                const marksOption = document.createElement("option");
+                marksOption.value = doc.id;
+                marksOption.text = doc.data().name;
+                marksSemesterSelect.appendChild(marksOption);
+            });
+        }
+
+        // Function to add a new subject
+        async function addSubject() {
+            const subjectName = document.getElementById("subjectName").value;
+            const semester = document.getElementById("subjectSemesterSelect").value;
+
+            if (subjectName && semester) {
+                try {
+                    const subjectDocRef = doc(db, "subjects", subjectName);
+                    await setDoc(subjectDocRef, {
+                        name: subjectName,
+                        semester: semester
+                    });
+                    alert("Subject added successfully!");
+                    loadSubjects(semester);
+                } catch (e) {
+                    console.error("Error adding subject: ", e);
+                }
+            } else {
+                alert("Please fill in both subject name and semester.");
+            }
+        }
+
+        // Function to load subjects into the marks section based on the selected semester
+        async function loadSubjects(semester) {
+            const subjectsContainer = document.getElementById("subjectsContainer");
+            subjectsContainer.innerHTML = "";
+
+            const q = query(collection(db, "subjects"), where("semester", "==", semester));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const subject = doc.data().name;
+                const input = document.createElement("input");
+                input.type = "number";
+                input.id = `${subject}Marks`;
+                input.placeholder = `${subject} Marks`;
+                input.required = true;
+                subjectsContainer.appendChild(input);
+            });
+        }
+
+        // Function to add a new student
+        async function addStudent() {
+            const studentName = document.getElementById("studentName").value;
+            const rollNumber = document.getElementById("rollNumber").value;
+
+            if (studentName && rollNumber) {
+                try {
+                    const studentDocRef = doc(db, "students", rollNumber);
+                    await setDoc(studentDocRef, {
+                        name: studentName,
+                        rollNumber: rollNumber,
+                        marks: {}  // Initialize an empty object for marks
+                    });
+                    alert("Student added successfully!");
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                }
+            } else {
+                alert("Please fill in both name and roll number.");
+            }
+        }
+
+        // Function to enter/update marks for a student
+        async function addMarks() {
+            const rollNumber = document.getElementById("marksRollNumber").value;
+            const semester = document.getElementById("marksSemesterSelect").value;
+            const seriesExam = document.getElementById("seriesExam").value;
+            const marks = {};
+
+            const subjectsContainer = document.getElementById("subjectsContainer");
+            const inputs = subjectsContainer.getElementsByTagName("input");
+            for (let input of inputs) {
+                const subject = input.id.replace("Marks", "");
+                marks[subject] = input.value;
+            }
+
+            if (rollNumber && semester && seriesExam && Object.values(marks).every(mark => mark)) {
+                try {
+                    const studentDocRef = doc(db, "students", rollNumber);
+                    const docSnap = await getDoc(studentDocRef);
+
+                    if (docSnap.exists()) {
+                        // Document exists, update it
+                        await updateDoc(studentDocRef, {
+                            [`marks.${semester}.${seriesExam}`]: marks
+                        });
+                        alert("Marks updated successfully!");
+                    } else {
+                        // Document doesn't exist, create a new one
+                        await setDoc(studentDocRef, {
+                            name: "Unknown",  // You can set a default name or prompt the user for a name
+                            rollNumber: rollNumber,
+                            marks: {
+                                [semester]: {
+                                    [seriesExam]: marks
+                                }
+                            }
+                        });
+                        alert("Student added and marks stored successfully!");
+                    }
+                } catch (e) {
+                    console.error("Error updating/adding document: ", e);
+                }
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        // Function to fetch student marks using roll number
+        async function getMarks() {
+            const rollNumber = document.getElementById("fetchRollNumber").value;
+            const semester = document.getElementById("fetchSemester").value;
+            const seriesExam = document.getElementById("fetchSeriesExam").value;
+
+            if (rollNumber && semester && seriesExam) {
+                try {
+                    const docRef = doc(db, "students", rollNumber);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const studentData = docSnap.data();
+                        const marks = studentData.marks[semester][seriesExam];
+                        // Function to check if marks are pass or fail
+                        function checkPassFail(score) {
+                            return score >= 40 ? "Pass" : "Fail";
+                        }
+
+                        // Display marks and pass/fail for each subject
+                        let displayMarks = `Name: ${studentData.name} <br>`;
+                        for (let subject in marks) {
+                            displayMarks += `${subject}: ${marks[subject]} (${checkPassFail(marks[subject])}) <br>`;
+                        }
+                        document.getElementById("displayMarks").innerHTML = displayMarks;
+                    } else {
+                        alert("No student found with this roll number.");
+                    }
+                } catch (e) {
+                    console.error("Error fetching document: ", e);
+                }
+            } else {
+                alert("Please enter all fields.");
+            }
+        }
+
+        // Load semesters on page load
+        window.onload = loadSemesters;
+
+        // Event listeners
+        document.getElementById("addStudentBtn").addEventListener("click", addStudent);
+        document.getElementById("addSubjectBtn").addEventListener("click", addSubject);
+        document.getElementById("addSemesterBtn").addEventListener("click", addSemester);
+        document.getElementById("addMarksBtn").addEventListener("click", addMarks);
+        document.getElementById("fetchMarksBtn").addEventListener("click", getMarks);
+        document.getElementById("marksSemesterSelect").addEventListener("change", (event) => {
+            loadSubjects(event.target.value);
+        });
+    </script>
+</head>
+<body>
+    <h1>Student Marks Management</h1>
+
+    <div class="section">
+        <h2>Add Semester</h2>
+        <input type="text" id="semesterName" placeholder="Enter Semester Name" required>
+        <button id="addSemesterBtn">Add Semester</button>
+    </div>
+
+    <div class="section">
+        <h2>Add Subject</h2>
+        <input type="text" id="subjectName" placeholder="Enter Subject Name" required>
+        Semester:<select id="subjectSemesterSelect" required>
+            <option value="" disabled selected>Select Semester</option>
+        </select>
+        <button id="addSubjectBtn">Add Subject</button>
+    </div>
+
+    <div class="section">
+        <h2>Add Student</h2>
+        <input type="text" id="studentName" placeholder="Enter Student Name" required>
+        <input type="text" id="rollNumber" placeholder="Enter Roll Number" required>
+        <button id="addStudentBtn">Add Student</button>
+    </div>
+
+    <div class="section">
+        <h2>Enter/Update Marks</h2>
+        <input type="text" id="marksRollNumber" placeholder="Enter Roll Number" required>
+        Semester:<select id="marksSemesterSelect" required>
+            <option value="" disabled selected>Select Semester</option>
+        </select>
+        <input type="text" id="seriesExam" placeholder="Enter Series Exam" required>
+        <div id="subjectsContainer"></div>
+        <button id="addMarksBtn">Enter/Update Marks</button>
+    </div>
+
+    <div class="section">
+        <h2>Fetch Marks</h2>
+        <input type="text" id="fetchRollNumber" placeholder="Enter Roll Number" required>
+        <input type="text" id="fetchSemester" placeholder="Enter Semester" required>
+        <input type="text" id="fetchSeriesExam" placeholder="Enter Series Exam" required>
+        <button id="fetchMarksBtn">Fetch Marks</button>
+        <div id="displayMarks"></div>
+    </div>
+
+</body>
+</html>

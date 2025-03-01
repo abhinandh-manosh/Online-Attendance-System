@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Homepage</title>
+    <style>
+        body{
+            background:linear-gradient(to right, #e2e2e2, #c9d6ff);
+        }
+        h1{
+            text-align:center;
+
+        }
+        button{
+            color:blueviolet;
+            background-color:#c9d6ff;
+            padding:5px;
+            border-radius:5px;
+            font-size:1rem;
+            font-weight:bold;
+            border:none;
+        }
+        button:hover{
+            text-decoration: underline;
+            color:blue;
+        }
+        button, div{
+            font-size:20px;
+            padding:10px;
+        }
+        div{
+            font-weight:400;
+            color:rgb(12,11,11);
+
+        }
+        span{
+            font-weight:600;
+            font-size:22px;
+            color:black;
+        }
+        .popup
+         {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            flex-wrap: nowrap;
+            top: 0;
+            left: 0; 
+            display: none; 
+            justify-content: center;
+            align-items: center; 
+            z-index: 1000;
+        }
+        .popup-content{
+            height: 300px; 
+            width: 750px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            justify-content: flex-end;
+            background-color: white;
+            color: white;
+            padding: 1px 1px;
+            align-items: right;
+    }
+        #processingMessage {
+            display: none; /* Hidden initially */
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+    <script type="module" src="./homepage.js"></script>
+    <script>
+        function add() {
+            const button = document.getElementById('markButton');
+            const message = document.getElementById('processingMessage');
+            
+            button.disabled = true;
+            message.style.display = 'block'; 
+            
+          
+            setTimeout(() => {
+                window.location.href='add.html';
+                button.disabled = false;
+            }, 3000);
+        }
+        function seeAtt() {
+            const button = document.getElementById('markButton');
+            const message = document.getElementById('processingMessage');
+            
+            button.disabled = true;
+            message.style.display = 'block'; 
+            
+          
+            setTimeout(() => {
+                window.location.href='att.html';
+                button.disabled = false;
+            }, 3000);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div>
+             Welcome: <span id="Admin"></span></div>
+             <a href="#" class="button" id="button"><img src="img/user.png" width="50" height="50"></a>
+        </div>
+    </header>
+    <div class="popup">
+        <div class="popup-content">
+            <a href="#" class="button" id="close"><img src="img/back.png" alt="close" width="25" height="25" ></a>
+            <center><img src="img/user.png" width="50" height="50"></center>
+            <div>Institution Name: <span id="loggedAdminName"></span></div>
+            <div>Institution Id: <span id="loggedAdminId"></span></div>
+            <div>Email: <span id="loggedAdminEmail"></span></div>
+            <center><button id="logout">Logout</button></center>
+
+        </div>
+    </div>
+    <br><br>
+    <button id="markButton" onclick="add()">Manage Staff</button>
+    <button id="markButton" onclick="seeAtt()"> See Attendance</button>
+    <div id="processingMessage">Processing...</div>
+</body>
+</html>
